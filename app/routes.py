@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, url_for, redirect
-from app.forms import TitleForm, LoginForm
+from app.forms import TitleForm, LoginForm, RegisterForm
 
 @app.route('/')
 @app.route('/index')
@@ -46,6 +46,7 @@ def title():
 
     return render_template('form.html', title='Change Title', form=form)
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -54,3 +55,15 @@ def login():
         print(f'E-mail: {form.email.data} \t Password: {form.password.data}')
         return redirect(url_for('index'))
     return render_template('form.html', title='Login', form=form)
+
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        print('You have been registered!')
+        return redirect(url_for('login'))
+
+    return render_template('form.html', title='Register', form=form)
