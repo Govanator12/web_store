@@ -1,0 +1,29 @@
+{% extends 'bootstrap/base.html' %}
+
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="../static/css/main.css">
+{% endblock %}
+
+{% block title %}
+  {{ title }} - Twitter
+{% endblock %}
+
+{% block navbar %}
+  <!-- TODO: add boostrap 4 navbar here -->
+
+{% endblock %}
+
+{% block content %}
+  <header>
+    <p>Header</p>
+  </header>
+
+  <!-- all template files will render within block app content -->
+  {% block app_content %}{% endblock %}
+
+  <footer>
+    <p>Footer</p>
+  </footer>
+{% endblock %}
