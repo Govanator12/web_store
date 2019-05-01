@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, IntegerField, TextAreaField
-from wtforms.validators import DataRequired, Email, EqualTo
+from wtforms.validators import DataRequired, Email, EqualTo, length
 
 
 
@@ -28,4 +28,5 @@ class RegisterForm(FlaskForm):
 class ContactForm(FlaskForm):
     name = StringField('Name')
     email = StringField("E-mail",validators=[DataRequired(), Email()])
-    message = TextAreaField('Message', validators=[DataRequired()])
+    message = TextAreaField('Message', validators=[DataRequired(), length(max=500)])
+    submit = SubmitField('Contact')

@@ -1,6 +1,6 @@
 from app import app
-from flask import render_template, url_for, redirect
-from app.forms import TitleForm, LoginForm, RegisterForm
+from flask import render_template, url_for, redirect, flash
+from app.forms import TitleForm, LoginForm, RegisterForm, ContactForm
 
 @app.route('/')
 @app.route('/index')
@@ -42,6 +42,8 @@ def title():
 
     if form.validate_on_submit():
         header = form.title.data
+
+        flash(f'You have changed the title to {header}')
         return redirect(url_for('index', header=header))
 
     return render_template('form.html', title='Change Title', form=form)
@@ -52,7 +54,7 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        print(f'E-mail: {form.email.data} \t Password: {form.password.data}')
+        print(f'E-mail: {form.email.data} \n Password: {form.password.data}')
         return redirect(url_for('index'))
     return render_template('form.html', title='Login', form=form)
 
@@ -63,7 +65,7 @@ def register():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        print('You have been registered!')
+        flash(f'Thanks for registering, an e-mail confirmation has been sent to {form.email.data}')
         return redirect(url_for('login'))
 
     return render_template('form.html', title='Register', form=form)
@@ -71,3 +73,9 @@ def register():
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     form = ContactForm()
+
+    if form.validate_on_submit():
+        flash(f'Thanks for your submission, we will contaact you shortly. A copy of your message has been sent to {form.email.data}')
+        return redirect(url_for('index'))
+
+    return render_template('form.html', form=form, title='Contact Us')
