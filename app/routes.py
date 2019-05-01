@@ -1,11 +1,11 @@
-from app import app
+from app import app, db
 from flask import render_template, url_for, redirect, flash
 from app.forms import TitleForm, LoginForm, RegisterForm, ContactForm
+from app.models import Title
 
 @app.route('/')
 @app.route('/index')
-@app.route('/index/<header>', methods=['GET'])
-def index(header=''):
+def index():
     products = [
         {
             'id': 1001,
@@ -33,6 +33,8 @@ def index(header=''):
         }
     ]
 
+    header = Title.query.get(1).title
+
     return render_template('index.html', title='Home', products=products, header=header)
 
 
@@ -43,8 +45,15 @@ def title():
     if form.validate_on_submit():
         header = form.title.data
 
+        data = Title.query.get(1)
+        data.title = header
+
+        # add to session and commit
+        db.session.add(data)
+        db.session.commit()
+
         flash(f'You have changed the title to {header}')
-        return redirect(url_for('index', header=header))
+        return redirect(url_for('index'))
 
     return render_template('form.html', title='Change Title', form=form)
 
