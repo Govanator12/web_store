@@ -67,3 +67,7 @@ def register():
         return redirect(url_for('login'))
 
     return render_template('form.html', title='Register', form=form)
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    form = ContactForm()

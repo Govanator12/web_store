@@ -24,3 +24,8 @@ class RegisterForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Re-type Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
+
+class ContactForm(FlaskForm):
+    name = StringField('Name')
+    email = StringField("E-mail",validators=[DataRequired(), Email()])
+    message = TextAreaField('Message', validators=[DataRequired()])
