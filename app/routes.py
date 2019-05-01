@@ -54,7 +54,7 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        print(f'E-mail: {form.email.data} \n Password: {form.password.data}')
+        flash('Successfully Logged In')
         return redirect(url_for('index'))
     return render_template('form.html', title='Login', form=form)
 

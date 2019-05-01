@@ -74,6 +74,18 @@
 {% endblock %}
 
 {% block content %}
+  <!-- show flash messages via an alert box-->
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for m in messages %}
+        <script type="text/javascript">
+          alert('{{ m }}')
+        </script>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+
   <!-- all template files will render within block app content -->
   {% block app_content %}{% endblock %}
 
