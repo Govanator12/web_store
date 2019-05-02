@@ -2,7 +2,7 @@ from app import app, db, login
 from flask import render_template, url_for, redirect, flash
 from app.forms import TitleForm, LoginForm, RegisterForm, ContactForm, PostForm
 from app.models import Title, Contact, Post, User
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 
 @app.route('/')
 @app.route('/index')
@@ -66,7 +66,7 @@ def login():
     # if user is already logged in, send them to the profile page
     if current_user.is_authenticated:
         flash('You are already logged in!')
-        return redirect(url_for('profile', username=user.username))
+        return redirect(url_for('profile', username=current_user.username))
 
     if form.validate_on_submit():
         # query the database for the user trying to log in
@@ -141,6 +141,7 @@ def contact():
 
     return render_template('form.html', form=form, title='Contact Us')
 
+@login_required
 @app.route('/profile/<username>', methods=['GET', 'POST'])
 def profile(username=''):
     form = PostForm()
@@ -150,7 +151,7 @@ def profile(username=''):
     user = User.query.filter_by(username=username).first()
 
     if form.validate_on_submit():
-        post=Post(tweet=form.tweet.data, user_id=user.id)
+        post=Post(tweet=form.tweet.data, user_id=current_user.id)
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('profile', username=user.username))
@@ -162,3 +163,20 @@ def logout():
     logout_user()
     flash('You have been logged out!')
     return redirect(url_for('login'))
+
+@app.route('/checkout', methods=['GET', 'POST'])
+def checkout():
+    cart = [
+        {
+            'amount': 2,
+            'title': 'Buckets of Dirt',
+            'price': 3.98,
+        },
+        {
+            'amount': 45,
+            'title': 'Krabby Patties',
+            'price': 5.99,
+        }
+    ]
+
+    return render_template('checkout.html', title='Checkout', cart=cart)
