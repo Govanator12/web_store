@@ -38,7 +38,23 @@ def index():
 
     return render_template('index.html', title='Home', products=products, header=header)
 
+@app.route('/checkout', methods=['GET', 'POST'])
+def checkout():
+    cart = [
+        {
+            'amount': 2,
+            'title': 'Buckets of Dirt',
+            'price': 3.98,
+        },
+        {
+            'amount': 45,
+            'title': 'Krabby Patties',
+            'price': 5.99,
+        }
+    ]
 
+    return render_template('checkout.html', title='Checkout', cart=cart)
+    
 @app.route('/title', methods=['GET', 'POST'])
 def title():
     form = TitleForm()
@@ -163,20 +179,3 @@ def logout():
     logout_user()
     flash('You have been logged out!')
     return redirect(url_for('login'))
-
-@app.route('/checkout', methods=['GET', 'POST'])
-def checkout():
-    cart = [
-        {
-            'amount': 2,
-            'title': 'Buckets of Dirt',
-            'price': 3.98,
-        },
-        {
-            'amount': 45,
-            'title': 'Krabby Patties',
-            'price': 5.99,
-        }
-    ]
-
-    return render_template('checkout.html', title='Checkout', cart=cart)

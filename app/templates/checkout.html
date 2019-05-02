@@ -5,7 +5,7 @@
     <main>
       <div class="row">
         <div class="col-md-12">
-          <h1>Checkout</h1>
+          <h1>{{ title }}</h1>
           <table class="table">
             <thead>
               <tr>
@@ -21,7 +21,9 @@
                   <th scope="row">{{ item.amount }}</th>
                   <td>{{ item.title }}</td>
                   <td>${{ item.price }}</td>
-                  <td>Remove</td>
+                  <td>
+                    <button class="btn btn-danger">X</button>
+                  </td>
                 </tr>
               {% endfor %}
             </tbody>
