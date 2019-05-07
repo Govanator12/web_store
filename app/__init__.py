@@ -11,7 +11,7 @@ app = Flask(__name__)
 boostrap = Bootstrap(app)
 app.config.from_object(Config)
 
-#you have to instantiate the database variables afet the config has been set
+#you have to instantiate the database variables after the config has been set
 # reason is that the config holds the location of the database
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
