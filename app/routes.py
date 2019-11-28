@@ -1,5 +1,5 @@
 from app import app, db, login
-from flask import render_template, url_for, redirect, flash
+from flask import render_template, url_for, redirect, flash, request, jsonify
 from app.forms import TitleForm, LoginForm, RegisterForm, ContactForm, PostForm
 from app.models import Title, Contact, Post, User
 from flask_login import current_user, login_user, logout_user, login_required
@@ -54,7 +54,7 @@ def checkout():
     ]
 
     return render_template('checkout.html', title='Checkout', cart=cart)
-    
+
 @app.route('/title', methods=['GET', 'POST'])
 def title():
     form = TitleForm()
@@ -179,3 +179,47 @@ def logout():
     logout_user()
     flash('You have been logged out!')
     return redirect(url_for('login'))
+
+@app.route('/api/posts/', methods=['GET', 'POST'])
+def apiPosts():
+    username = request.args.get('username')
+
+    user = User.query.filter_by(username=username).first()
+
+    try:
+        posts = []
+
+        for post in user.posts:
+            posts.append({
+            'id': post.id,
+            'tweet': post.tweet
+            })
+        return jsonify(posts)
+    except:
+        return jsonify({ 'error': 'Invalid params'})
+
+    return jsonify({})
+
+@app.route('/api/contacts/', methods=['GET', 'POST'])
+def apiContacts():
+    email = request.args.get('email')
+
+    contacts = Contact.query.filter_by(email=email).all()
+
+    try:
+        messages = []
+
+        for contact in contacts:
+            messages.append({
+                'id': contact.id,
+                'name': contact.name,
+                'email':contact.email,
+                'message': contact.message
+            })
+
+        return jsonify(messages)
+
+    except:
+        return jsonify({ 'error': 'Invalid params'})
+
+    return jsonify({})

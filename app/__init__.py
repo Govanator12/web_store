@@ -8,7 +8,7 @@ from flask_login import LoginManager
 
 # setup app variables
 app = Flask(__name__)
-boostrap = Bootstrap(app)
+bootstrap = Bootstrap(app)
 app.config.from_object(Config)
 
 # you have to instantiate the database variables after the config has been set
